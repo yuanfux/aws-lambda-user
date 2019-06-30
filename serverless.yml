@@ -1,0 +1,78 @@
+service: aws-lambda-user
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: us-west-2
+  memorySize: 128
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    PRIVATE_KEY: ${file(./secret.json):secret}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
+functions:
+
+  public:
+    handler: user/public.public
+    events:
+      - http:
+          path: api/public
+          method: get
+          cors: true
+
+  private:
+    handler: user/private.private
+    events:
+      - http:
+          path: api/private
+          method: get
+          authorizer: auth
+          cors: true
+
+  login:
+    handler: user/login.login
+    events:
+      - http:
+          path: api/user/login
+          method: get
+          cors: true
+
+  signup:
+    handler: user/signup.signup
+    events:
+      - http:
+          path: api/user/signup
+          method: post
+          cors: true
+  auth:
+    handler: user/auth.auth
+
+resources:
+  Resources:
+    UserTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: username
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: username
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}

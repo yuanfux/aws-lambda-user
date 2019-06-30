@@ -1,0 +1,11 @@
+{
+  "name": "aws-lambda-user",
+  "version": "1.0.0",
+  "description": "Use aws lambda to build a user system",
+  "author": "Yuan Fu",
+  "license": "MIT",
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "uuid": "^2.0.3"
+  }
+}
