@@ -40,7 +40,7 @@ curl -X GET 'https://xxxxxx.execute-api.us-west-2.amazonaws.com/dev/api/user/log
 ```
 
 #### response
-```json
+```bash
 # user the returned token to access private method
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld191c2VyIiwiaWF0IjoxNTYxODI1NTgyfQ.Iv0ulooGayulxf_MkkpBO1xEw1gilThT62ysuz-rQE0",
