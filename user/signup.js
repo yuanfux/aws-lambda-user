@@ -1,7 +1,6 @@
 'use strict';
 
 const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
 const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-dependencies
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
