@@ -9,7 +9,6 @@ const errorResponse = utils.errorResponse;
 const genHashedPassword = utils.genHashedPassword;
 
 const TABLE_NAME = process.env.DYNAMODB_TABLE;
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
 module.exports.signup = (event, context, callback) => {
   const data = JSON.parse(event.body);
