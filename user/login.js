@@ -23,12 +23,10 @@ module.exports.login = (event, context, callback) => {
       TableName: TABLE_NAME,
       Key: {
         username
-      },
+      }
     };
 
-    // fetch todo from the database
     dynamoDb.get(params, (error, data) => {
-      // handle potential errors
       if (error) {
         console.error(error);
         callback(null, errorResponse(
@@ -37,18 +35,26 @@ module.exports.login = (event, context, callback) => {
         return;
       }
 
-      // create a response
-      const response = {
-        statusCode: 200,
-        body: JSON.stringify({
-          username,
-          // return jwt
-          token: jwt.sign({
-            username
-          }, PRIVATE_KEY)
-        })
-      };
-      callback(null, response);
+      const user = data.Item;
+      // validate username & password
+      if (user && validatePassword(password, user.salt, user.password)) {
+        const response = {
+          statusCode: 200,
+          body: JSON.stringify({
+            username: user.username,
+            // return jwt
+            token: jwt.sign({
+              username: user.username
+            }, PRIVATE_KEY)
+          })
+        };
+        callback(null, response);
+      } else {
+        callback(null, errorResponse(
+          'Invalid username or password!',
+          401
+        ));
+      }
     });
   } else {
     callback(null, errorResponse(

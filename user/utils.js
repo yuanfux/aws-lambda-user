@@ -19,7 +19,7 @@ module.exports.genHashedPassword = (password) => {
   }
 }
 
-module.exports.validPassword = (password, salt, hashedPassword) => {
+module.exports.validatePassword = (password, salt, hashedPassword) => {
   return hashedPassword === crypto.pbkdf2Sync(password, salt, 10000, 512, 'sha512').toString('hex');
 };
 
