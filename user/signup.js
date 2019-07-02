@@ -11,8 +11,8 @@ const genHashedPassword = utils.genHashedPassword;
 const TABLE_NAME = process.env.DYNAMODB_TABLE;
 
 module.exports.signup = (event, context, callback) => {
-  const { body='{}' } = event;
-  const data = JSON.parse(event.body);
+  const { body } = event;
+  const data = body && JSON.parse(body);
   const { username, password } = data;
   if (
     typeof username === 'string' &&
