@@ -12,7 +12,12 @@ const TABLE_NAME = process.env.DYNAMODB_TABLE;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
 module.exports.login = (event, context, callback) => {
-  const { username, password } = event.queryStringParameters;
+  const {
+    queryStringParameters: {
+      username,
+      password
+    } = {}
+  } = event;
   if (
     typeof username === 'string' &&
     typeof password === 'string' &&
