@@ -12,7 +12,7 @@ const TABLE_NAME = process.env.DYNAMODB_TABLE;
 
 module.exports.signup = (event, context, callback) => {
   const { body } = event;
-  const data = body && JSON.parse(body);
+  const data = body ? JSON.parse(body) : {};
   const { username, password } = data;
   if (
     typeof username === 'string' &&
